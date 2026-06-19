@@ -18,10 +18,9 @@ body{
   padding:20px;
 }
 
-/* 图片区域 */
 .viewer{
   width:100%;
-  aspect-ratio: 5/3;
+  aspect-ratio:5/3;
   background:#111;
   display:flex;
   justify-content:center;
@@ -37,21 +36,6 @@ body{
   object-fit:contain;
 }
 
-/* 信息区 */
-.info{
-  margin-top:20px;
-  line-height:1.8;
-  font-size:16px;
-  color:#ccc;
-}
-
-.title{
-  font-size:22px;
-  margin-bottom:10px;
-  color:#fff;
-}
-
-/* 切换按钮 */
 .nav{
   position:absolute;
   top:50%;
@@ -66,7 +50,11 @@ body{
   color:#fff;
   font-size:20px;
   padding:10px;
-  cursor:pointer;
+}
+
+.info{
+  margin-top:20px;
+  color:#ccc;
 }
 </style>
 
@@ -81,11 +69,11 @@ body{
       <button onclick="prev()">‹</button>
       <button onclick="next()">›</button>
     </div>
-    < img id="img" src="">
+    < img id="img">
   </div>
 
   <div class="info">
-    <div class="title" id="airline"></div>
+    <div id="title"></div>
     <div id="detail"></div>
   </div>
 
@@ -93,22 +81,15 @@ body{
 
 <script>
 
-let data;
-let index = 0;
-let imgs = [];
-
-function getParam(){
-  const url = new URL(window.location.href);
-  return url.searchParams.get("id");
-}
+let data, item, imgs = [], i = 0;
 
 async function load(){
 
-  const res = await fetch("photo.json");
-  data = await res.json();
+  data = await (await fetch("photo.json")).json();
 
-  const id = getParam();
-  const item = data.find(i => i.id == id);
+  const id = new URL(location.href).searchParams.get("id");
+
+  item = data.find(x=>x.id == id);
 
   if(!item){
     document.body.innerHTML = "Not Found";
@@ -117,34 +98,28 @@ async function load(){
 
   imgs = item.images || [];
 
-  document.getElementById("airline").innerText =
+  document.getElementById("title").innerText =
     item.airline + " | " + item.type;
 
-  document.getElementById("detail").innerHTML = `
-    机场：${item.airport}<br>
-    日期：${item.date}<br>
-  `;
+  document.getElementById("detail").innerHTML =
+    `机场：${item.airport}<br>日期：${item.date}`;
 
   show();
-  autoPlay();
+  setInterval(next,4000);
 }
 
 function show(){
-  document.getElementById("img").src = imgs[index];
+  document.getElementById("img").src = imgs[i];
 }
 
 function next(){
-  index = (index + 1) % imgs.length;
+  i = (i+1)%imgs.length;
   show();
 }
 
 function prev(){
-  index = (index - 1 + imgs.length) % imgs.length;
+  i = (i-1+imgs.length)%imgs.length;
   show();
-}
-
-function autoPlay(){
-  setInterval(next, 4000);
 }
 
 load();
