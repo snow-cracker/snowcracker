@@ -6,20 +6,22 @@ const REPO = "snowcracker";
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>SnowCracker Aviation Photos</title>
+<meta charset="UTF-8">
+<title>SnowCracker Aviation Photos</title>
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="header">SnowCracker Aviation Photos</div>
 
+<!-- 搜索 -->
 <div class="searchBox">
-  <input id="search" placeholder="搜索机型 / 航司 / 机场 / 日期">
+  <input id="search" placeholder="搜索：机型 / 航司 / 机场 / 日期 / 注册号">
 </div>
 
+<!-- 分类栏 -->
 <div class="categoryBar">
   <div class="category" onclick="toggle('model')">机型</div>
   <div class="category" onclick="toggle('airline')">航司</div>
@@ -27,16 +29,25 @@ const REPO = "snowcracker";
   <div class="category" onclick="toggle('date')">日期</div>
 </div>
 
+<!-- 子菜单 -->
 <div id="model" class="subMenu"></div>
 <div id="airline" class="subMenu"></div>
 <div id="airport" class="subMenu"></div>
 <div id="date" class="subMenu"></div>
 
+<!-- 上传 -->
 <div style="text-align:center;margin:20px;">
-  <input type="file" id="files" multiple>
+  <input type="file" id="files" multiple><br><br>
+
+  <input id="airline" placeholder="航司"><br>
+  <input id="type" placeholder="机型"><br>
+  <input id="airport" placeholder="机场"><br>
+  <input id="date" placeholder="日期"><br><br>
+
   <button onclick="upload()">上传</button>
 </div>
 
+<!-- 磁贴 -->
 <div class="grid" id="grid"></div>
 
 <script src="app.js"></script>
