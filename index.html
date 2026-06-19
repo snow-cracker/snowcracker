@@ -6,76 +6,40 @@ const REPO = "snowcracker";
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Snow Aviation</title>
-<style>
-body { font-family: Arial; margin:0; background:#111; color:#fff; }
-.header { padding:20px; text-align:center; font-size:24px; }
-.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:10px; padding:10px; }
-.card { background:#222; padding:10px; border-radius:8px; cursor:pointer; }
-.card img { width:100%; height:120px; object-fit:cover; }
-.meta { font-size:12px; color:#aaa; }
-#uploadBox { padding:10px; }
-</style>
+  <meta charset="UTF-8">
+  <title>SnowCracker Aviation Photos</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="header">SnowCracker Aviation Photos</div>
 
-<div id="uploadBox">
-<input type="file" id="files" multiple><br>
-<input id="airline" placeholder="航司"><br>
-<input id="type" placeholder="机型"><br>
-<input id="airport" placeholder="机场"><br>
-<input id="date" placeholder="日期"><br>
-<button onclick="upload()">上传</button>
+<div class="searchBox">
+  <input id="search" placeholder="搜索机型 / 航司 / 机场 / 日期">
+</div>
+
+<div class="categoryBar">
+  <div class="category" onclick="toggle('model')">机型</div>
+  <div class="category" onclick="toggle('airline')">航司</div>
+  <div class="category" onclick="toggle('airport')">机场</div>
+  <div class="category" onclick="toggle('date')">日期</div>
+</div>
+
+<div id="model" class="subMenu"></div>
+<div id="airline" class="subMenu"></div>
+<div id="airport" class="subMenu"></div>
+<div id="date" class="subMenu"></div>
+
+<div style="text-align:center;margin:20px;">
+  <input type="file" id="files" multiple>
+  <button onclick="upload()">上传</button>
 </div>
 
 <div class="grid" id="grid"></div>
 
-<script>
-
-const CONFIG = {
-  USER: "snow-cracker",
-  REPO: "snowcracker"
-};
-
-let data = [];
-
-async function load(){
-  const res = await fetch("photo.json");
-  data = await res.json();
-  render();
-}
-
-function render(){
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-
-  data.forEach(p => {
-    const div = document.createElement("div");
-    div.className = "card";
-
-    div.innerHTML = `
-      < img src="${p.images?.[0] || ''}">
-      <div class="meta">${p.airline}</div>
-      <div class="meta">${p.type}</div>
-      <div class="meta">${p.airport}</div>
-      <div class="meta">${p.date}</div>
-    `;
-
-    grid.appendChild(div);
-  });
-}
-
-async function upload(){
-  alert("下一步我们接GitHub API上传（马上给你升级版）");
-}
-
-load();
-
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
